@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# SSH Setup Manager - Ultimate Edition
-# Usage: ./ssh-setup.sh [service] [hostname] [user] [port]
+# ssh-wunderbar - SSH engineering with wunderbar feeling!
+# Usage: ./ssh-wunderbar [service] [hostname] [user] [port]
 # Examples:
-#   ./ssh-setup.sh                              # Interactive menu
-#   ./ssh-setup.sh github                       # Setup GitHub (from JSON)
-#   ./ssh-setup.sh pihole                       # Setup Pi-hole (from JSON)
-#   ./ssh-setup.sh nas 192.168.1.50 admin 22   # Setup NAS (non-interactive)
-#   ./ssh-setup.sh --add-service nas 192.168.1.50 admin 22
-#   ./ssh-setup.sh --setup-all                  # Setup all JSON services
-#   ./ssh-setup.sh --list                       # List all services
-#   ./ssh-setup.sh --help                       # Show help
+#   ./ssh-wunderbar                              # Interactive menu
+#   ./ssh-wunderbar github                       # Setup GitHub (from JSON)
+#   ./ssh-wunderbar pihole                       # Setup Pi-hole (from JSON)
+#   ./ssh-wunderbar nas 192.168.1.50 admin 22   # Setup NAS (non-interactive)
+#   ./ssh-wunderbar --add-service nas 192.168.1.50 admin 22
+#   ./ssh-wunderbar --setup-all                  # Setup all JSON services
+#   ./ssh-wunderbar --list                       # List all services
+#   ./ssh-wunderbar --help                       # Show help
 
 # Get script directory for JSON file
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -52,6 +52,39 @@ print_error() {
 
 print_header() {
     echo -e "${CYAN}[SSH-MANAGER]${NC} $1"
+}
+
+# Input validation functions
+validate_hostname() {
+    local hostname="$1"
+    if [[ ! "$hostname" =~ ^[a-zA-Z0-9][a-zA-Z0-9\.-]*[a-zA-Z0-9]$ ]] && [[ ! "$hostname" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+        print_error "Invalid hostname format: $hostname"
+        return 1
+    fi
+}
+
+validate_port() {
+    local port="$1"
+    if [[ ! "$port" =~ ^[0-9]+$ ]] || [ "$port" -lt 1 ] || [ "$port" -gt 65535 ]; then
+        print_error "Invalid port: $port (must be 1-65535)"
+        return 1
+    fi
+}
+
+validate_username() {
+    local username="$1"
+    if [[ ! "$username" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+        print_error "Invalid username format: $username"
+        return 1
+    fi
+}
+
+validate_email() {
+    local email="$1"
+    if [[ ! "$email" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+        print_error "Invalid email format: $email"
+        return 1
+    fi
 }
 
 # Test mode configuration
@@ -133,6 +166,19 @@ save_service() {
     local port="$4"
     local description="$5"
     local type="server"
+    
+    # Validate inputs
+    if [[ -z "$service" || -z "$hostname" || -z "$user" || -z "$port" ]]; then
+        print_error "Missing required parameters for service configuration"
+        return 1
+    fi
+    
+    # Skip validation for special services
+    if [ "$service" != "github" ]; then
+        validate_hostname "$hostname" || return 1
+        validate_username "$user" || return 1 
+        validate_port "$port" || return 1
+    fi
     
     # Special handling for GitHub
     if [ "$service" = "github" ]; then
@@ -245,7 +291,10 @@ interactive_menu() {
     
     if [ ${#services[@]} -eq 0 ]; then
         echo "No services configured. Add some first:"
-        echo "  ./ssh-setup.sh --add-service <name> <host> <user> <port>"
+        echo "  ./ssh-wunderbar --add-service <name> <host> <user> <port>"
+        echo ""
+        echo "Example:"
+        echo "  ./ssh-wunderbar --add-service myserver 192.168.1.100 admin 22"
         return 1
     fi
     
@@ -558,6 +607,10 @@ generate_service_key() {
     
     if [ -z "$email" ]; then
         print_error "Email cannot be empty"
+        return 1
+    fi
+    
+    if ! validate_email "$email"; then
         return 1
     fi
     
