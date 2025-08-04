@@ -14,7 +14,7 @@
 
 # Get script directory for JSON file
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SERVICES_JSON="$SCRIPT_DIR/services.json"
+SERVICES_JSON="$HOME/.ssh-services.json"
 
 # Signal handler for Ctrl+C
 cleanup_and_exit() {
