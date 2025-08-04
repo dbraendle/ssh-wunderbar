@@ -296,12 +296,35 @@ interactive_menu() {
     local services=($(jq -r '.services | keys[]' "$SERVICES_JSON" 2>/dev/null))
     
     if [ ${#services[@]} -eq 0 ]; then
-        echo "No services configured. Add some first:"
-        echo "  ./ssh-wunderbar --add-service <name> <host> <user> <port>"
+        echo "No services configured yet."
         echo ""
-        echo "Example:"
-        echo "  ./ssh-wunderbar --add-service myserver 192.168.1.100 admin 22"
-        return 1
+        echo "Options:"
+        echo "  1) Add new service"
+        echo "  2) Exit"
+        echo ""
+        
+        while true; do
+            read -p "Choice (1-2): " choice
+            case $choice in
+                1)
+                    echo ""
+                    print_status "Adding new service..."
+                    add_service_interactive
+                    if [ $? -eq 0 ]; then
+                        # Refresh and show menu with new service
+                        interactive_menu
+                        return $?
+                    fi
+                    ;;
+                2)
+                    print_status "Exiting SSH setup"
+                    return 0
+                    ;;
+                *)
+                    echo "Invalid choice. Please enter 1 or 2."
+                    ;;
+            esac
+        done
     fi
     
     echo "Available services:"
