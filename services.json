@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "services": {
+    "test-server": {
+      "type": "server",
+      "hostname": "192.168.1.100",
+      "user": "pi",
+      "port": 22,
+      "description": "test-server server",
+      "test_command": "uptime"
+    },
+    "testi": {
+      "type": "server",
+      "hostname": "1.2.3.4",
+      "user": "tester",
+      "port": 122,
+      "description": "testinbecshreiobung",
+      "test_command": "uptime"
+    },
+    "huu": {
+      "type": "server",
+      "hostname": "3.2.1.4",
+      "user": "uhh",
+      "port": 33,
+      "description": "huuuhuuu",
+      "test_command": "uptime"
+    }
+  },
+  "settings": {
+    "default_key_type": "ed25519",
+    "auto_backup_config": true,
+    "cleanup_old_keys": false,
+    "key_rotation_days": 365
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "services": {
+    "github": {
+      "type": "git",
+      "hostname": "github.com",
+      "user": "git", 
+      "port": 22,
+      "description": "GitHub SSH authentication",
+      "readonly": true,
+      "test_command": "ssh -T git@github.com"
+    },
+    "gitlab": {
+      "type": "git",
+      "hostname": "gitlab.com",
+      "user": "git",
+      "port": 22, 
+      "description": "GitLab SSH authentication"
+    },
+    "vps-personal": {
+      "type": "server",
+      "hostname": "my-vps.digitalocean.com",
+      "user": "root",
+      "port": 22,
+      "description": "Personal VPS for projects"
+    },
+    "raspberry-dev": {
+      "type": "server",
+      "hostname": "192.168.1.100",
+      "user": "pi",
+      "port": 22,
+      "description": "Raspberry Pi development board"
+    },
+    "work-laptop": {
+      "type": "server",
+      "hostname": "work-laptop.local",
+      "user": "developer",
+      "port": 22,
+      "description": "Work laptop for remote development"
+    }
+  },
+  "settings": {
+    "default_key_type": "ed25519",
+    "auto_backup_config": true,
+    "cleanup_old_keys": false,
+    "key_rotation_days": 180
+  }
+}

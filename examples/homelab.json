@@ -1,0 +1,55 @@
+{
+  "version": "1.0",
+  "services": {
+    "github": {
+      "type": "git",
+      "hostname": "github.com",
+      "user": "git",
+      "port": 22,
+      "description": "GitHub SSH authentication",
+      "readonly": true,
+      "test_command": "ssh -T git@github.com"
+    },
+    "pihole": {
+      "type": "server",
+      "hostname": "192.168.1.10",
+      "user": "pi",
+      "port": 22,
+      "description": "Pi-hole DNS server"
+    },
+    "homeassistant": {
+      "type": "server", 
+      "hostname": "192.168.1.20",
+      "user": "homeassistant",
+      "port": 22,
+      "description": "Home Assistant server"
+    },
+    "nas": {
+      "type": "server",
+      "hostname": "192.168.1.30", 
+      "user": "admin",
+      "port": 22,
+      "description": "Synology NAS"
+    },
+    "plex": {
+      "type": "server",
+      "hostname": "192.168.1.40",
+      "user": "plex",
+      "port": 22,
+      "description": "Plex media server"
+    },
+    "router": {
+      "type": "server",
+      "hostname": "192.168.1.1",
+      "user": "admin", 
+      "port": 22,
+      "description": "Home router (OpenWrt)"
+    }
+  },
+  "settings": {
+    "default_key_type": "ed25519",
+    "auto_backup_config": true,
+    "cleanup_old_keys": false,
+    "key_rotation_days": 365
+  }
+}

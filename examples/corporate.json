@@ -1,0 +1,69 @@
+{
+  "version": "1.0",
+  "services": {
+    "github": {
+      "type": "git",
+      "hostname": "github.com", 
+      "user": "git",
+      "port": 22,
+      "description": "GitHub SSH authentication",
+      "readonly": true,
+      "test_command": "ssh -T git@github.com"
+    },
+    "prod-web": {
+      "type": "server",
+      "hostname": "web.prod.company.com",
+      "user": "deploy",
+      "port": 22,
+      "description": "Production web server"
+    },
+    "prod-db": {
+      "type": "server", 
+      "hostname": "db.prod.company.com",
+      "user": "postgres",
+      "port": 22,
+      "description": "Production database server"
+    },
+    "staging-web": {
+      "type": "server",
+      "hostname": "web.staging.company.com", 
+      "user": "deploy",
+      "port": 22,
+      "description": "Staging web server"
+    },
+    "staging-db": {
+      "type": "server",
+      "hostname": "db.staging.company.com",
+      "user": "postgres", 
+      "port": 22,
+      "description": "Staging database server"
+    },
+    "bastion": {
+      "type": "server",
+      "hostname": "bastion.company.com",
+      "user": "admin",
+      "port": 2222,
+      "description": "Bastion/Jump host"
+    },
+    "monitoring": {
+      "type": "server",
+      "hostname": "monitor.company.com",
+      "user": "grafana",
+      "port": 22,
+      "description": "Monitoring server (Grafana/Prometheus)"
+    },
+    "ci-runner": {
+      "type": "server", 
+      "hostname": "ci.company.com",
+      "user": "gitlab-runner",
+      "port": 22,
+      "description": "CI/CD runner server"
+    }
+  },
+  "settings": {
+    "default_key_type": "ed25519",
+    "auto_backup_config": true,
+    "cleanup_old_keys": true,
+    "key_rotation_days": 90
+  }
+}
