@@ -309,7 +309,9 @@ interactive_menu() {
                 1)
                     echo ""
                     print_status "Adding new service..."
-                    add_service_interactive
+                    # Go to main interactive menu to add service
+                    echo "Use option 2 to add new service from main menu"
+                    return 0
                     if [ $? -eq 0 ]; then
                         # Refresh and show menu with new service
                         interactive_menu
